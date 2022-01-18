@@ -1,0 +1,80 @@
+body {
+  text-align: center;
+}
+
+.boardStyle {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  background-color: lightseagreen;
+  display: grid;
+  grid-template-columns: repeat(20, 20px);
+  grid-gap: 0px;
+}
+
+.cell {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.light {
+  background-color: turquoise;
+}
+
+.wall {
+  background-color: darkcyan;
+}
+
+.snakePart {
+  background-image: url('snake part.png');
+}
+
+.snakeRight {
+  transform: rotate(0deg);
+}
+
+.snakeLeft {
+  transform: rotate(180deg);
+}
+
+.snakeDown {
+  transform: rotate(90deg);
+}
+
+.snakeUp {
+  transform: rotate(270deg);
+}
+
+.snakeHead {
+  background-image: url('snake head.png');
+}
+
+.snakeTail {
+  background-image: url('snake tail.png');
+}
+
+.snakeTailRight {
+  transform: rotate(0deg);
+}
+
+.snakeTailUp {
+  transform: rotate(270deg);
+}
+
+.snakeTailLeft {
+  transform: rotate(180deg);
+}
+
+.snakeTailDown {
+  transform: rotate(90deg);
+}
+
+.coin {
+  background-image: url('coin.png');
+  background-repeat: no-repeat;
+}
+
+.puddle {
+  background-color: blue;
+}
