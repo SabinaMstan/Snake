@@ -17,9 +17,9 @@ function startGame() {
   document.getElementById('board').innerHTML = '';
   loadBoard();
   displayScore();
-  getSnake();
-  getTreat();
-  getPuddle();
+  generateSnake();
+  generateTreat();
+  generatePuddle();
   interval = setInterval(moveSnake, milliSec);
 }
 
@@ -30,7 +30,6 @@ function loadBoard() {
       ++id;
       let cell = document.createElement('div');
       cell.setAttribute('id', id);
-      //cell.innerHTML = id;
       if (i == 0 || i == 19 || j == 0 || j == 19) {
         cell.classList.add('cell', 'wall');
       }
@@ -56,10 +55,10 @@ function displayScore() {
 }
 
 
-function getSnake() {
-  let id = getRandomNumber(nrCellsRow * nrCellsCol - 1);
+function generateSnake() {
+  let id = generateRandomNumber(nrCellsRow * nrCellsCol - 1);
   if (document.getElementById(id).classList.contains('wall') || document.getElementById(id - 1).classList.contains('wall') || document.getElementById(id - 2).classList.contains('wall')) {
-    getSnake();
+    generateSnake();
   } else {
     snake = [id - 2, id - 1, id];
     document.getElementById(id - 1).classList.add('snakePart');
@@ -69,24 +68,23 @@ function getSnake() {
   headPos = snake.length - 1;
 }
 
-function getTreat() {
-  let id = getRandomNumber(nrCellsRow * nrCellsCol - 1);
-  //alert(id);
+function generateTreat() {
+  let id = generateRandomNumber(nrCellsRow * nrCellsCol - 1);
   let coin = document.getElementById(id);
-  if (coin.classList.contains('wall') ||coin.classList.contains('snake')) {
-    getTreat();
+  if (coin.classList.contains('wall') || coin.classList.contains('snake')) {
+    generateTreat();
   } else {
     coin.classList.add('coin');
   }
 }
 
-function getPuddle() {
-  let nrOfPuddles = getRandomNumber(3);
+function generatePuddle() {
+  let nrOfPuddles = generateRandomNumber(3);
   for (let puddleIndex = 0; puddleIndex < nrOfPuddles; ++puddleIndex) {
     let tryagain = 1;
     while (tryagain === 1) {
       tryagain = 0;
-      let id = getRandomNumber(nrCellsRow * nrCellsCol - 1);
+      let id = generateRandomNumber(nrCellsRow * nrCellsCol - 1);
       let puddleCell = document.getElementById(id);
       if (puddleCell.classList.contains('puddle') || puddleCell.classList.contains('wall') || puddleCell.classList.contains('snake') || puddleCell.classList.contains('coin')) {
         tryagain = 1;
@@ -98,19 +96,14 @@ function getPuddle() {
   }
 }
 
+
 function getHeadDir(event) {
-  if (event.keyCode === 38 && !document.getElementById(snake[headPos]).classList.contains('snakeDown')) {
-    dir = -20;
-    dirClass = 'Up';
-  } else if (event.keyCode === 37 && !document.getElementById(snake[headPos]).classList.contains('snakeRight')) {
-    dir = -1;
-    dirClass = 'Left';
-  } else if (event.keyCode === 39 && !document.getElementById(snake[headPos]).classList.contains('snakeLeft')) {
-    dir = 1;
-    dirClass = 'Right';
-  } else if (event.keyCode === 40 && !document.getElementById(snake[headPos]).classList.contains('snakeUp')) {
-    dir = 20;
-    dirClass = 'Down';
+  let directions = [[38,'snakeDown',-20,'Up'], [37,'snakeRight',-1,'Left'], [39, 'snakeLeft', 1, 'Right'], [40, 'snakeUp', 20, 'Down']];
+  for (let d of directions) {
+    if (event.keyCode === d[0] && !document.getElementById(snake[headPos]).classList.contains(d[1])) {
+      dir = d[2];
+      dirClass = d[3];
+    }
   }
 }
 
@@ -148,7 +141,7 @@ function checkHeadPos() {
 
 function getPoints() {
   currentHeadPosition.classList.remove('coin');
-  getTreat();
+  generateTreat();
   score += 1;
   scoreField.value = score;
 }
@@ -163,11 +156,11 @@ function diveIn() {
     }
   } else if (puddles.length === 3) {
     if (puddlePos === 0) {
-      snake[headPos] = puddles[getRandomNumber(2)];
+      snake[headPos] = puddles[generateRandomNumber(2)];
     } else if (puddlePos === 1) {
       snake[headPos] = puddles[2];
     } else {
-      snake[headPos] = puddles[getRandomNumber(2) - 1];
+      snake[headPos] = puddles[generateRandomNumber(2) - 1];
     }
   } else {
     gameOver();
@@ -194,7 +187,7 @@ function posTail() {
   }
 }
 
-function getRandomNumber(n) {
+function generateRandomNumber(n) {
   return Math.floor(Math.random() * n + 1);
 }
 
